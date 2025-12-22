@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const allBtn = document.createElement("button");
     allBtn.className = "btn active";
-    allBtn.textContent = "All";
+    allBtn.textContent = "الكل";
     allBtn.onclick = () => filterImages("All", allBtn);
     subCategoryContainer.appendChild(allBtn);
 
@@ -103,7 +103,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const img = document.createElement("img");
         img.src = imgSrc;
-        img.alt = "Gallery Image";
+
+        // 👇 التعديل هنا لسرعة الصاروخ
+        img.setAttribute("loading", "lazy"); // لا يحمل الصورة إلا لما تقرب منها
+        img.alt = `أصول لتنفيذ الخشب - ${currentCategory}`; // مهم جداً لجوجل (SEO)
 
         div.onclick = () => openModal(imgSrc);
 
