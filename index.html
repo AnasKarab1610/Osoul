@@ -1,18 +1,22 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl"> <head>
+<html lang="ar" dir="rtl">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>أصول - للأعمال الخشبية والديكور</title>
-    <link rel="stylesheet" href="style.css">
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;700;900&family=Reem+Kufi:wght@400;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+    
     <meta name="description" content="أصول للأعمال الخشبية والديكور - متخصصون في تجاليد الحوائط الخشبية، غرف النوم، المطابخ والموبيليا المودرن والكلاسيك بأعلى دقة تنفيذ.">
     <meta name="keywords" content="أصول, ورشة أصول, Osoul, Osoul Woodworking, Osoul Decorations, تجاليد خشب, تجاليد حوائط, نجار موبيليا, مطابخ عمولة, Woodworking Egypt, Custom Furniture">
+    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-		<link rel="icon" type="image/png" href="logo.png">
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
@@ -23,75 +27,85 @@
         </div>
     </header>
 
-    <main class="container">
+    <main class="container" id="gallery-section">
         <div id="category-container" class="filter-buttons"></div>
         <div id="subcategory-container" class="filter-buttons sub-filters hidden"></div>
         <div id="gallery-grid" class="gallery-grid"></div>
     </main>
-<div id="modal" class="modal">
-    <span class="close" style="z-index: 9999;">&times;</span>
-    
-    <div class="swiper mySwiper">
-        <div class="swiper-wrapper">
-            </div>
-        <div class="swiper-button-next"></div>
-        <div class="swiper-button-prev"></div>
+
+    <div id="modal" class="modal">
+        <span class="close">&times;</span>
+        <div class="swiper mySwiper">
+            <div class="swiper-wrapper"></div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+        </div>
     </div>
-</div>
     
-<a href="https://wa.me/201286111358" class="whatsapp-float" target="_blank">
-    <img src="whatsapp-icon.png">
-</a>
+    <a href="https://wa.me/201286111358" class="whatsapp-float" target="_blank">
+        <img src="whatsapp-icon.png" alt="تواصل معنا عبر واتساب">
+    </a>
+
+    <footer class="site-footer">
+        <div class="footer-container">
+            
+            <div class="footer-col about">
+                <h3>أُصُــول</h3>
+                <p>متخصصون في تجاليد الحوائط الخشبية، غرف النوم، المطابخ والموبيليا المودرن والكلاسيك بأعلى دقة تنفيذ.</p>
+            </div>
+
+            <div class="footer-col links">
+                <h3>أقسامنا</h3>
+                <ul>
+                    <li><a href="javascript:void(0)" onclick="clickCategory(1)">التجاليد</a></li>
+                    <li><a href="javascript:void(0)" onclick="clickCategory(2)">دواليب</a></li>
+                    <li><a href="javascript:void(0)" onclick="clickCategory(3)">غرف نوم</a></li>
+                    <li><a href="javascript:void(0)" onclick="clickCategory(8)">ابواب</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col contact">
+                <h3>تواصل معنا</h3>
+                <ul>
+                    <li class="contact-item">
+                        <a href="tel:+201286111358" class="contact-link">
+                            <span class="contact-text">01286111358</span>
+                            <i class="fas fa-phone-alt fa-flip-horizontal"></i> 
+                        </a>
+                    </li>
+
+                    <li class="contact-item">
+                        <a href="https://t.me/Osoul0" target="_blank" class="contact-link">
+                            <span class="contact-text">Telegram</span>
+                            <i class="fab fa-telegram"></i> 
+                        </a>
+                    </li>
+
+                    <li class="contact-item">
+                        <a href="#" class="contact-link">
+                            6 أكتوبر، الجيزة، مصر <i class="fas fa-map-marker-alt"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>جميع الحقوق محفوظة &copy; 2025 <span class="gold-text">أصول للأعمال الخشبية</span></p>
+        </div>
+    </footer>
+
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="script.js"></script>
+    
+    <script>
+        function clickCategory(index) {
+            const btn = document.querySelector(`#category-container button:nth-child(${index})`);
+            if(btn) {
+                btn.click();
+                document.getElementById('gallery-section').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    </script>
 </body>
-<footer class="site-footer">
-    <div class="footer-container">
-        
-        <div class="footer-col about">
-            <h3>أُصُــول</h3>
-            <p>متخصصون في تجاليد الحوائط الخشبية، غرف النوم، المطابخ والموبيليا المودرن والكلاسيك بأعلى دقة تنفيذ.</p>
-        </div>
-
-        <div class="footer-col links">
-            <h3>أقسامنا</h3>
-            <ul>
-                <li><a href="#" onclick="document.querySelector('#category-container button:nth-child(1)').click()">التجاليد</a></li>
-                <li><a href="#" onclick="document.querySelector('#category-container button:nth-child(2)').click()">دواليب</a></li>
-                <li><a href="#" onclick="document.querySelector('#category-container button:nth-child(3)').click()">غرف نوم</a></li>
-                <li><a href="#" onclick="document.querySelector('#category-container button:nth-child(8)').click()">ابواب</a></li>
-            </ul>
-        </div>
-
-        <div class="footer-col contact">
-            <h3>تواصل معنا</h3>
-<ul>
-    <li style="margin-bottom: 15px;">
-        <a href="tel:+201286111358">
-            <span style="font-weight: bold;"> 01286111358 </span>
-            <i class="fas fa-phone-alt fa-flip-horizontal"></i> 
-        </a>
-    </li>
-
-    <li style="margin-bottom: 15px;">
-        <a href="https://t.me/+201286111358" target="_blank" >
-            <span style="font-weight: bold;"> Telegram </span>
-            <i class="fab fa-telegram" ></i> 
-        </a>
-    </li>
-
-    <li>
-        <a href="#">
-            6 أكتوبر، الجيزة، مصر <i class="fas fa-map-marker-alt"></i>
-        </a>
-    </li>
-</ul>
-        </div>
-
-    </div>
-
-    <div class="footer-bottom">
-        <p>جميع الحقوق محفوظة &copy; 2025 <span class="gold-text">أصول للأعمال الخشبية</span></p>
-    </div>
-</footer>
 </html>

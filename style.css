@@ -1,12 +1,6 @@
-* {
-    -webkit-tap-highlight-color: transparent;
-    -webkit-touch-callout: none; /* لمنع ظهور قائمة النسخ عند الضغط الطويل */
-}
 /* =========================================
    1. VARIABLES & RESET
    ========================================= */
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&family=Tajawal:wght@400;500;700&family=Reem+Kufi:wght@700&display=swap');
-
 :root {
     --bg-color: #1a1512;
     --text-color: #f5f5dc;
@@ -16,18 +10,23 @@
     --font-body: 'Tajawal', sans-serif;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+* {
+    margin: 0; padding: 0; box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+}
 
 body {
     background-color: var(--bg-color);
     color: var(--text-color);
     font-family: var(--font-body);
     line-height: 1.6;
-    direction: rtl; /* للتأكد من الاتجاه العربي */
+    direction: rtl;
 }
+
 body.no-scroll {
-    overflow: hidden; /* بيخفي شريط السكرول وبيمنع الحركة */
-    height: 100vh;    /* بيجمد الطول */
+    overflow: hidden;
+    height: 100vh;
 }
 
 /* =========================================
@@ -48,8 +47,6 @@ body.no-scroll {
     font-size: 8rem;
     color: #eeddca; 
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
-    letter-spacing: 2px;
-    letter-spacing: 0px;
     line-height: 1.1;
 }
 
@@ -62,7 +59,7 @@ body.no-scroll {
 }
 
 /* =========================================
-   3. LAYOUT & TYPOGRAPHY
+   3. LAYOUT & BUTTONS
    ========================================= */
 .container {
     max-width: 1200px;
@@ -70,21 +67,6 @@ body.no-scroll {
     padding: 3rem 1rem;
 }
 
-.section-title {
-    text-align: center;
-    margin-bottom: 2.5rem;
-}
-
-.section-title h2 {
-    color: var(--accent-color);
-    font-family: var(--font-heading);
-    font-size: 2.2rem;
-    margin-bottom: 0.5rem;
-}
-
-/* =========================================
-   4. BUTTONS
-   ========================================= */
 .filter-buttons {
     display: flex;
     justify-content: center;
@@ -124,17 +106,12 @@ body.no-scroll {
 .hidden { display: none; }
 
 /* =========================================
-    5. GALLERY GRID
+    4. GALLERY GRID (Masonry)
    ========================================= */
-/* --- تنسيق Masonry (بنترست) --- */
-
-/* --- نظام الشبكة الذكي (Smart Grid) --- */
 #gallery-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    /* 👇 التغيير هنا: صغرنا ارتفاع السطر الواحد ليكون وحدة بناء صغيرة */
     grid-auto-rows: 50px; 
-    
     grid-auto-flow: dense; 
     gap: 15px;
     padding: 10px;
@@ -144,26 +121,19 @@ body.no-scroll {
     border-radius: 10px;
     overflow: hidden;
     cursor: pointer;
-    background-color: #2b221e;	
-    margin: 0;
+    background-color: #2b221e;  
     transition: transform 0.3s ease;
-    
     grid-row: span 4; 
 }
 
-/* الصورة العريضة: بتاخد عمودين، وبتضل 5 وحدات ارتفاع */
 .gallery-item.wide {
     grid-column: span 2;
-    grid-row: span 4;
 }
 
-/* 👇 الصورة الطويلة: بتاخد 8 وحدات (يعني 1.6 مرة قد العادية) */
-/* هيك لا هي دبل (10 وحدات) ولا هي عادية (5 وحدات) */
 .gallery-item.tall {
     grid-column: span 1;
     grid-row: span 6; 
 }
-
 
 .gallery-item img {
     width: 100%;
@@ -172,11 +142,8 @@ body.no-scroll {
     display: block;
 }
 
-
-@keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
-
 /* =========================================
-   6. MODAL & WHATSAPP
+   5. MODAL & WHATSAPP
    ========================================= */
 .modal {
     display: none;
@@ -186,42 +153,31 @@ body.no-scroll {
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.95); /* خلفية سوداء غامقة */
-}
-.swiper {
-    width: 100%;
-    height: 100%;
+    background-color: rgba(0, 0, 0, 0.95);
 }
 
+.swiper { width: 100%; height: 100%; }
 .swiper-slide {
     overflow: hidden;
-    /* التوسيط */
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-/* تنسيق زر الإغلاق */
 .close {
     position: absolute;
-    top: 20px;
-    right: 35px;
+    top: 20px; right: 35px;
     color: #f1f1f1;
-    font-size: 40px;
-    font-weight: bold;
+    font-size: 40px; font-weight: bold;
     cursor: pointer;
-    filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 1)) 
-            drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.8));
-    z-index: 9999; /* فوق كل شي */
+    z-index: 9999;
+    filter: drop-shadow(0px 0px 5px rgba(0,0,0,1));
 }
-
-/* --- تنسيق أسهم التنقل (Swiper Arrows) --- */
 
 .swiper-button-next, .swiper-button-prev {
     color: #ffffff !important;
-    filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 1)) 
-            drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.8));
-    transition: transform 0.2s ease, filter 0.2s ease;
+    filter: drop-shadow(0px 0px 5px rgba(0,0,0,1));
+    transition: transform 0.2s ease;
 }
 
 .swiper-button-next:hover, .swiper-button-prev:hover, .close:hover {
@@ -229,37 +185,24 @@ body.no-scroll {
     color: #DEB886 !important;
 }
 
-.whatsapp-float { position: fixed; bottom: 25px; right: 25px; width: 50px; height: 50px; z-index: 2000; border-radius: 50%; box-shadow: 2px 2px 10px rgba(0,0,0,0.5); cursor: pointer; transition: 0.3s; }
+.whatsapp-float {
+    position: fixed; bottom: 25px; right: 25px;
+    width: 50px; height: 50px;
+    z-index: 2000; border-radius: 50%;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+    transition: 0.3s;
+}
 .whatsapp-float img { width: 100%; height: 100%; object-fit: cover; }
 
 /* =========================================
-   7. MOBILE RESPONSIVENESS (UPDATED)
+   6. FOOTER STYLES
    ========================================= */
-
-
-@media (max-width: 768px) {
-    .hero { height: 25vh; }
-	  #gallery-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px; 
-        padding: 5px;
-    }
-    .hero-content h1 {
-        font-size: 4rem; /* حجم مناسب للموبايل */
-        text-shadow: 3px 3px 10px rgba(0,0,0,0.8);
-    }
-    .section-title h2 { font-size: 2rem; }
-    .whatsapp-float { bottom: 20px; right: 20px; }
-    .prev-btn, .next-btn { padding: 10px; font-size: 20px; }
-}
-
-/* --- تنسيق الفوتر الاحترافي --- */
 .site-footer {
-    background-color: #1a120b; /* بني غامق جداً قريب للأسود */
-    color: #e0d0b8; /* بيج فاتح للكتابة */
+    background-color: #1a120b;
+    color: #e0d0b8;
     padding: 40px 0 20px;
     margin-top: 50px;
-    border-top: 4px solid #c5a085; /* خط علوي بلون الخشب */
+    border-top: 4px solid #c5a085;
     font-family: 'Cairo', sans-serif;
 }
 
@@ -268,88 +211,50 @@ body.no-scroll {
     margin: 0 auto;
     padding: 0 20px;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* تقسيم تلقائي للأعمدة */
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 40px;
 }
 
 .footer-col h3 {
-    color: #c5a085; /* لون العنوان (خشب لاتيه) */
+    color: #c5a085;
     font-size: 1.5rem;
     margin-bottom: 20px;
     position: relative;
     padding-bottom: 10px;
 }
 
-/* خط صغير تحت كل عنوان */
 .footer-col h3::after {
     content: '';
     position: absolute;
-    bottom: 0;
-    right: 0;
-    width: 50px;
-    height: 2px;
+    bottom: 0; right: 0;
+    width: 50px; height: 2px;
     background-color: #c5a085;
 }
 
-.footer-col p {
-    line-height: 1.8;
-    color: #b0a090;
-}
+.footer-col ul { list-style: none; padding: 0; }
+.contact-item { margin-bottom: 15px; }
 
-/* الروابط والقوائم */
-.footer-col ul {
-    list-style: none;
-    padding: 0;
-}
-
-.footer-col ul li {
-    margin-bottom: 12px;
-}
-
-.footer-col ul li a {
+.footer-col ul li a, .contact-link {
     color: #e0d0b8;
     text-decoration: none;
     transition: 0.3s;
 }
 
+.contact-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.contact-text { font-weight: bold; }
+
 .footer-col ul li a:hover {
     color: #fff;
-    padding-right: 10px; /* حركة بسيطة لليمين عند الماوس */
+    padding-right: 10px;
 }
 
-/* أيقونات التواصل */
-.footer-col i {
-    margin-left: 10px;
-    color: #c5a085;
-    width: 20px;
-}
+.footer-col i { color: #c5a085; }
 
-/* السوشيال ميديا */
-.social-links {
-    margin-top: 20px;
-}
-
-.social-links a {
-    display: inline-flex; /* أهم سطر: بيسمح بالتحكم في التوسيط */
-    justify-content: center; /* توسيط أفقي */
-    align-items: center;     /* توسيط رأسي */
-    width: 40px;
-    height: 40px;
-    background-color: #2b221e;
-    color: #fff;
-    border-radius: 50%;
-    margin-left: 10px;
-    text-decoration: none;
-    transition: 0.3s;
-    font-size: 18px; /* حجم الأيقونة المناسب */
-}
-
-.social-links a:hover {
-    background-color: #c5a085;
-    transform: translateY(-5px);
-}
-
-/* الشريط السفلي */
 .footer-bottom {
     text-align: center;
     margin-top: 30px;
@@ -358,23 +263,26 @@ body.no-scroll {
     font-size: 0.9rem;
 }
 
-.gold-text {
-    color: #c5a085;
-    font-weight: bold;
-}
+.gold-text { color: #c5a085; font-weight: bold; }
 
-/* --- للموبايل --- */
+/* =========================================
+   7. MOBILE RESPONSIVENESS
+   ========================================= */
 @media (max-width: 768px) {
-    .footer-container {
-        text-align: center; /* توسيط الكلام بالموبايل */
+    .hero { height: 25vh; }
+    .hero-content h1 { font-size: 4rem; text-shadow: 3px 3px 10px rgba(0,0,0,0.8); }
+    
+    #gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px; padding: 5px;
     }
     
-    .footer-col h3::after {
-        right: 50%;
-        transform: translateX(50%); /* توسيط الخط تحت العنوان */
-    }
+    .whatsapp-float { bottom: 20px; right: 20px; }
     
-    .footer-col ul li a:hover {
-        padding-right: 0; /* إلغاء الحركة بالموبايل */
-    }
+    .footer-container { text-align: center; }
+    .footer-col h3::after { right: 50%; transform: translateX(50%); }
+    .footer-col ul li a:hover { padding-right: 0; }
+    
+    /* توسيط أيقونات الاتصال في الموبايل */
+    .contact-link { justify-content: center; }
 }

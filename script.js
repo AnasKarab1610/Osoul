@@ -11,8 +11,6 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentCategory = null;
   let currentImagesList = [];
   let swiperInstance = null;
-
-  // متغيرات لحساب السحب للأسفل (ميزة جديدة)
   let touchStartY = 0;
   let touchEndY = 0;
 
@@ -42,7 +40,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // 3. Initialize Categories
   function initCategories() {
     let categories = Object.keys(galleryData);
-
     categories.sort((a, b) => {
       let indexA = categoryOrder.indexOf(a);
       let indexB = categoryOrder.indexOf(b);
@@ -84,8 +81,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (galleryData[category]) {
       let subCategories = Object.keys(galleryData[category]);
-
-      // 👇 إضافة الترتيب الرقمي الذكي (1, 2, 10)
       subCategories.sort(new Intl.Collator("ar", { numeric: true }).compare);
 
       subCategories.forEach((sub) => {
@@ -98,7 +93,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
     }
-
     loadImages(category, "All");
   }
 
@@ -135,12 +129,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const width = this.naturalWidth;
         const height = this.naturalHeight;
         const aspectRatio = width / height;
-
-        if (aspectRatio > 1.3) {
-          div.classList.add("wide");
-        } else if (aspectRatio < 0.8) {
-          div.classList.add("tall");
-        }
+        if (aspectRatio > 1.3) div.classList.add("wide");
+        else if (aspectRatio < 0.8) div.classList.add("tall");
       };
 
       div.onclick = () => openSwiperModal(index);
@@ -151,15 +141,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // --- SWIPER MODAL CONFIGURATION ---
   function openSwiperModal(startIndex) {
-    // 👇 1. تسجيل نقطة في التاريخ عشان زر الرجوع يشتغل
     history.pushState({ modalOpen: true }, "", "#view");
-
     document.body.classList.add("no-scroll");
     modal.style.display = "block";
 
-    if (swiperInstance) {
-      swiperInstance.destroy(true, true);
-    }
+    if (swiperInstance) swiperInstance.destroy(true, true);
 
     const swiperWrapper = document.querySelector(".swiper-wrapper");
     swiperWrapper.innerHTML = "";
@@ -174,75 +160,49 @@ document.addEventListener("DOMContentLoaded", () => {
     swiperInstance = new Swiper(".mySwiper", {
       initialSlide: startIndex,
       spaceBetween: 30,
-      mousewheel: {
-        forceToAxis: true,
-      },
+      mousewheel: { forceToAxis: true },
       navigation: {
         nextEl: ".swiper-button-next",
         prevEl: ".swiper-button-prev",
       },
-      zoom: {
-        maxRatio: 5,
-        minRatio: 1,
-        toggle: true,
-      },
-      keyboard: {
-        enabled: true,
-      },
+      zoom: { maxRatio: 5, minRatio: 1, toggle: true },
+      keyboard: { enabled: true },
     });
   }
 
-  // --- دالة إخفاء الواجهة فقط (بدون منطق الرجوع) ---
+  // --- Modal Close Logic ---
   function hideModalUI() {
     document.body.classList.remove("no-scroll");
     modal.style.display = "none";
   }
 
-  // --- مستمع لزر الرجوع في الموبايل والمتصفح ---
-  window.addEventListener("popstate", (event) => {
-    // لما اليوزر يكبس رجوع، المتصفح بيشغل هذا الحدث
-    hideModalUI();
-  });
+  window.addEventListener("popstate", () => hideModalUI());
 
-  // --- دالة طلب الإغلاق (تحاكي زر الرجوع) ---
   function requestClose() {
-    // بدل ما نقفل فوراً، بنرجع خطوة لورا في الهيستوري
-    // وهاد أوتوماتيكياً رح يشغل الـ popstate ويقفل المودال
-    if (history.state && history.state.modalOpen) {
-      history.back();
-    } else {
-      hideModalUI();
-    }
+    if (history.state && history.state.modalOpen) history.back();
+    else hideModalUI();
   }
 
-  // ربط أزرار الإغلاق بالدالة الجديدة
   closeBtn.onclick = requestClose;
-
   modal.onclick = (e) => {
-    if (e.target.classList.contains("swiper") || e.target === modal) {
+    if (e.target.classList.contains("swiper") || e.target === modal)
       requestClose();
-    }
   };
-
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") requestClose();
   });
 
-  // --- ميزة السحب للأسفل للإغلاق (Swipe Down Logic) ---
-
+  // --- Swipe Up to Close ---
   modal.addEventListener(
     "touchstart",
     (e) => {
-      // تسجيل نقطة بداية اللمس
       touchStartY = e.changedTouches[0].screenY;
     },
     { passive: true }
   );
-
   modal.addEventListener(
     "touchend",
     (e) => {
-      // تسجيل نقطة نهاية اللمس
       touchEndY = e.changedTouches[0].screenY;
       handleSwipeGesture();
     },
@@ -250,15 +210,10 @@ document.addEventListener("DOMContentLoaded", () => {
   );
 
   function handleSwipeGesture() {
-    // حساب المسافة (النهاية - البداية)
     const swipeDistance = touchEndY - touchStartY;
-
-    // التأكد إننا مش عاملين زوم
     const isZoomed = swiperInstance && swiperInstance.zoom.scale > 1;
 
-    // 👇 التعديل هنا:
-    // بدل (swipeDistance > 100) خليناها (swipeDistance < -100)
-    // يعني لو سحب لفوق مسافة 100 بكسل
+    // Swipe UP condition (Negative distance)
     if (swipeDistance < -100 && !isZoomed) {
       requestClose();
     }
