@@ -250,15 +250,17 @@ document.addEventListener("DOMContentLoaded", () => {
   );
 
   function handleSwipeGesture() {
-    // حساب المسافة
+    // حساب المسافة (النهاية - البداية)
     const swipeDistance = touchEndY - touchStartY;
 
-    // التأكد إننا مش عاملين زوم (عشان ما يقفل وأنت بتتحرك جوا الصورة)
+    // التأكد إننا مش عاملين زوم
     const isZoomed = swiperInstance && swiperInstance.zoom.scale > 1;
 
-    // الشرط: سحب للأسفل أكثر من 100 بكسل + مفيش زوم
-    if (swipeDistance > 100 && !isZoomed) {
-      requestClose(); // استدعاء دالة الإغلاق
+    // 👇 التعديل هنا:
+    // بدل (swipeDistance > 100) خليناها (swipeDistance < -100)
+    // يعني لو سحب لفوق مسافة 100 بكسل
+    if (swipeDistance < -100 && !isZoomed) {
+      requestClose();
     }
   }
 });
