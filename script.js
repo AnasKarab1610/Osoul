@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
+  history.pushState({ scrollTopIntercept: true }, "", location.href);
   // DOM Elements
   const categoryContainer = document.getElementById("category-container");
   const subCategoryContainer = document.getElementById("subcategory-container");
@@ -54,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
       btn.textContent = cat;
       btn.onclick = () => {
         selectCategory(cat, btn);
-        scrollToVHResponsive(25, 40);//////////////////
+        scrollToVHResponsive(25, 40); //////////////////
       };
 
       categoryContainer.appendChild(btn);
@@ -82,7 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
     allBtn.textContent = "الكل";
     allBtn.onclick = () => {
       filterImages("All", allBtn);
-      scrollToVHResponsive(25, 40);///////////////////////////////
+      scrollToVHResponsive(25, 40); ///////////////////////////////
     };
     subCategoryContainer.appendChild(allBtn);
     if (galleryData[category]) {
@@ -95,7 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
           btn.textContent = sub;
           btn.onclick = () => {
             filterImages(sub, btn);
-            scrollToVHResponsive(25, 40);///////////////////////////////////////////
+            scrollToVHResponsive(25, 40); ///////////////////////////////////////////
           };
 
           subCategoryContainer.appendChild(btn);
@@ -105,17 +106,16 @@ document.addEventListener("DOMContentLoaded", () => {
     loadImages(category, "All");
   }
 
-function scrollToVHResponsive(mobileVH, desktopVH) {
-  const isMobile = window.matchMedia("(max-width: 767px)").matches;
+  function scrollToVHResponsive(mobileVH, desktopVH) {
+    const isMobile = window.matchMedia("(max-width: 767px)").matches;
 
-  const vh = window.visualViewport?.height || window.innerHeight;
+    const vh = window.visualViewport?.height || window.innerHeight;
 
-  window.scrollTo({
-    top: vh * ((isMobile ? mobileVH : desktopVH) / 100),
-    behavior: "smooth",
-  });
-}
-
+    window.scrollTo({
+      top: vh * ((isMobile ? mobileVH : desktopVH) / 100),
+      behavior: "smooth",
+    });
+  }
 
   // 6. Filter Images
   function filterImages(subCategory, btnElement) {
@@ -248,5 +248,18 @@ function scrollToVHResponsive(mobileVH, desktopVH) {
 
   arrow.addEventListener("click", () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
+  window.addEventListener("popstate", () => {
+    // إذا المستخدم نازل بالصفحة
+    if (window.scrollY > 50) {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+
+      // نمنع الخروج من الصفحة أول مرة
+      history.pushState({ scrollTopIntercept: true }, "", location.href);
+    }
   });
 });
