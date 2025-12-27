@@ -1,6 +1,9 @@
 /* =========================================
    1. VARIABLES & RESET
    ========================================= */
+html{
+    font-size: 16px;
+}
 :root {
     --bg-color: #1a1512;
     --text-color: #f5f5dc;
@@ -73,19 +76,23 @@ body.no-scroll {
     flex-wrap: wrap;
     gap: 15px;
     margin-bottom: 20px;
+    font-size: rem;
+
 }
 
 .btn {
-    /* background: transparent;
+    background: transparent;
     border: 1px solid #98633B;
-    color: #98633B; */
-    background: white;
-    color: black;
+    color: #98633B;
     padding: 10px 25px;
+    font-size: 1.1rem;
     cursor: pointer;
     font-family: var(--font-heading);
     transition: 0.3s;
+    font-weight: 700;
     border-radius: 2px;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
 }
 
 .btn:hover, .btn.active {
@@ -362,7 +369,7 @@ body.no-scroll {
    ========================================= */
 @media (max-width: 768px) {
     .hero { height: 25vh; }
-    .hero-content h1 { font-size: 4rem; text-shadow: 3px 3px 10px rgba(0,0,0,0.8); }
+    .hero-content h1 { font-size: 5rem; text-shadow: 3px 3px 10px rgba(0,0,0,0.8); }
     
     #gallery-grid {
         grid-template-columns: repeat(2, 1fr);
