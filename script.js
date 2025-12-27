@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       btn.onclick = () => {
         selectCategory(cat, btn);
-        scrollToVHResponsive(25, 40);
+        scrollToVHResponsive(30, 50);
       };
 
       categoryContainer.appendChild(btn);
