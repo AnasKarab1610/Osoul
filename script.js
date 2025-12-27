@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-  history.pushState({ scrollTopIntercept: true }, "", location.href);
   // DOM Elements
   const categoryContainer = document.getElementById("category-container");
   const subCategoryContainer = document.getElementById("subcategory-container");
@@ -15,19 +14,19 @@ document.addEventListener("DOMContentLoaded", () => {
   let touchStartY = 0;
   let touchEndY = 0;
 
-  // 1. الترتيب اليدوي للأقسام
+  // 1. الترتيب اليدوي للأقسام (تم ضبط الأسماء لغوياً)
   const categoryOrder = [
     "تجاليد",
     "دواليب",
-    "غرفة نوم",
-    "علب حمامات",
-    "مكتب",
-    "وحدة السلم",
-    "وحدة تلفاز",
-    "ابواب",
-    "صالة",
-    "طاولة",
-    "علب حائط",
+    "غرف نوم",
+    "وحدات حمام",
+    "مكاتب",
+    "وحدات سلالم",
+    "وحدات تلفاز",
+    "أبواب",
+    "غرف معيشة",
+    "طاولات",
+    "وحدات حائط",
   ];
 
   // 2. Fetch Data
@@ -53,13 +52,18 @@ document.addEventListener("DOMContentLoaded", () => {
       const btn = document.createElement("button");
       btn.className = "btn";
       btn.textContent = cat;
+
       btn.onclick = () => {
         selectCategory(cat, btn);
-        scrollToVHResponsive(25, 40); //////////////////
+        scrollToVHResponsive(25, 40);
       };
 
       categoryContainer.appendChild(btn);
-      if (index === 0) btn.click();
+
+      // اختيار الأول تلقائياً بدون سكرول
+      if (index === 0) {
+        selectCategory(cat, btn);
+      }
     });
   }
 
@@ -78,17 +82,21 @@ document.addEventListener("DOMContentLoaded", () => {
     subCategoryContainer.innerHTML = "";
     subCategoryContainer.classList.remove("hidden");
 
+    // 1️⃣ زر "الكل" يرجع للأول (زي ما طلبت)
     const allBtn = document.createElement("button");
     allBtn.className = "btn active";
     allBtn.textContent = "الكل";
     allBtn.onclick = () => {
       filterImages("All", allBtn);
-      scrollToVHResponsive(25, 40); ///////////////////////////////
+      scrollToVHResponsive(25, 40);
     };
     subCategoryContainer.appendChild(allBtn);
+
+    // 2️⃣ باقي الأزرار الفرعية
     if (galleryData[category]) {
       let subCategories = Object.keys(galleryData[category]);
       subCategories.sort(new Intl.Collator("ar", { numeric: true }).compare);
+
       subCategories.forEach((sub) => {
         if (!sub.startsWith("_")) {
           const btn = document.createElement("button");
@@ -96,19 +104,19 @@ document.addEventListener("DOMContentLoaded", () => {
           btn.textContent = sub;
           btn.onclick = () => {
             filterImages(sub, btn);
-            scrollToVHResponsive(25, 40); ///////////////////////////////////////////
+            scrollToVHResponsive(25, 40);
           };
-
           subCategoryContainer.appendChild(btn);
         }
       });
     }
+
     loadImages(category, "All");
   }
 
+  // دالة السكرول المتجاوب
   function scrollToVHResponsive(mobileVH, desktopVH) {
     const isMobile = window.matchMedia("(max-width: 767px)").matches;
-
     const vh = window.visualViewport?.height || window.innerHeight;
 
     window.scrollTo({
@@ -126,14 +134,34 @@ document.addEventListener("DOMContentLoaded", () => {
     loadImages(currentCategory, subCategory);
   }
 
-  // 7. Load Images into Grid
+  // 7. Load Images into Grid (التعديل الجوهري هنا) 🔥
   function loadImages(category, subCategory) {
     galleryGrid.innerHTML = "";
     currentImagesList = [];
 
     if (subCategory === "All") {
-      Object.values(galleryData[category]).forEach((imgs) => {
-        currentImagesList = currentImagesList.concat(imgs);
+      // ✅ المنطق الجديد لترتيب الصور داخل "الكل":
+      let allKeys = Object.keys(galleryData[category]);
+
+      // 1. نفصل المجلدات العادية عن الملفات المخفية (_)
+      let namedFolders = allKeys.filter((k) => !k.startsWith("_"));
+      let looseFiles = allKeys.filter((k) => k.startsWith("_")); // الصور الفلت
+
+      // 2. نرتب المجلدات (1، 2، 3...)
+      namedFolders.sort(new Intl.Collator("ar", { numeric: true }).compare);
+
+      // 3. نضيف صور المجلدات أولاً
+      namedFolders.forEach((key) => {
+        currentImagesList = currentImagesList.concat(
+          galleryData[category][key]
+        );
+      });
+
+      // 4. نضيف الصور الفلت بالأخير
+      looseFiles.forEach((key) => {
+        currentImagesList = currentImagesList.concat(
+          galleryData[category][key]
+        );
       });
     } else {
       currentImagesList = galleryData[category][subCategory];
@@ -234,32 +262,30 @@ document.addEventListener("DOMContentLoaded", () => {
     const swipeDistance = touchEndY - touchStartY;
     const isZoomed = swiperInstance && swiperInstance.zoom.scale > 1;
 
-    // Swipe UP condition (Negative distance)
     if (swipeDistance < -100 && !isZoomed) {
       requestClose();
     }
   }
-  // --- Scroll to Top Arrow ---
-  const arrow = document.getElementById("scrollTopArrow");
 
-  window.addEventListener("scroll", () => {
-    arrow.style.display = window.scrollY > 500 ? "flex" : "none";
-  });
+  // --- Scroll to Top Arrow Logic  ---
+  const arrow = document.getElementById("scroll-top-btn");
 
-  arrow.addEventListener("click", () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  });
+  if (arrow) {
+    window.addEventListener("scroll", () => {
+      // يظهر الزر لما ننزل 300 بكسل
+      if (window.scrollY > 300) {
+        arrow.classList.add("show");
+      } else {
+        arrow.classList.remove("show");
+      }
+    });
 
-  window.addEventListener("popstate", () => {
-    // إذا المستخدم نازل بالصفحة
-    if (window.scrollY > 50) {
+    // عند الضغط يطلع لفوق
+    arrow.onclick = () => {
       window.scrollTo({
         top: 0,
         behavior: "smooth",
       });
-
-      // نمنع الخروج من الصفحة أول مرة
-      history.pushState({ scrollTopIntercept: true }, "", location.href);
-    }
-  });
+    };
+  }
 });
