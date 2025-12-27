@@ -76,9 +76,11 @@ body.no-scroll {
 }
 
 .btn {
-    background: transparent;
+    /* background: transparent;
     border: 1px solid #98633B;
-    color: #98633B;
+    color: #98633B; */
+    background: white;
+    color: black;
     padding: 10px 25px;
     cursor: pointer;
     font-family: var(--font-heading);
